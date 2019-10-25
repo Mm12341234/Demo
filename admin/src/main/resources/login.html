@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>统一登录页面</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <!--<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">-->
+    <!--<link rel="stylesheet" href="statics/css/bootstrap.min.css">-->
+
+    <!--<link rel="stylesheet" href="statics/css/font-awesome.min.css">-->
+    <!--<link rel="stylesheet" href="statics/css/style.css">-->
+    <!--<link rel="stylesheet" href="statics/css/login.css">-->
+    <!--<link rel="stylesheet" href="statics/css/main.css">-->
+    <!--<link rel="stylesheet" href="statics/css/iview.css">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <!--<script src="statics/libs/html5shiv.min.js"></script>-->
+    <script src="/libs/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .title {
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 20px;
+            margin-top: 25px;
+        }
+
+        .head {
+            width: 100%;
+            background-color: #e3f2fd;
+            border: 1px solid #ddd;
+        }
+
+        .head img {
+            width: 13%;
+            margin-top: 5px;
+        }
+
+        .content {
+            width: 70%;
+            margin: 0 auto;
+            margin-top: 40px;
+        }
+
+        .content .contentLeft {
+            display: block;
+            width: 60%;
+            float: left;
+            margin-left: -8%;
+        }
+
+        .content .contentLeft p {
+            display: block;
+            font-size: 25px;
+            margin-top: 30px;
+        }
+
+        .content .contentLeft div {
+            font-size: 15px;
+            margin-top: 20px;
+        }
+
+        .content .contentRight {
+            width: 38%;
+            float: right;
+            margin-top: 40px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .content .contentLeft .contentLeftLeft {
+            float: left;
+        }
+
+        .content .contentLeft img {
+            width: 60%;
+            float: left;
+            margin-left: 18%;
+            margin-top: -30px;
+        }
+
+        .position {
+            position: relative;
+            z-index: -1000;
+        }
+
+        .wenZi span {
+            font-size: 16px;
+        }
+
+        /*账号登陆的表单样式*/
+        .formHeight {
+            height: 30px;
+            line-height: 30px;
+            font-size: 16px;
+        }
+
+        .form {
+            margin-top: 50px;
+            margin-left: 15%;
+        }
+
+        .formFloot {
+            margin-top: 40px;
+            margin-left: 7%;
+        }
+        .remind{
+            color:red;
+            display:none;
+        }
+    </style>
+    <!--<script src="statics/libs/jquery.min.js"></script>-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-primary fontColorSet">
+
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed buttonColor" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!--<a class="navbar-brand" href="#">智能仓库管理系统</a>-->
+            <img src="/img/logo.png" class="logo"/>
+        </div>
+    </div>
+</nav>
+<div class="content .contain">
+    <div class="contentLeft">
+        <div class="contentLeftLeft">
+            <p>智能冷库&nbsp;&nbsp;<span style="font-size:20px;color:#999">(&nbsp;Intelligent warehouse&nbsp;)</span></p>
+            <!--Intelligent warehouse-->
+            <div class="wenZi">
+                    <span>
+                    精确的地理定位，结合bimsever服务，<br/>实时地掌握食物的位置和温度，
+                    <br/>时刻清楚食物的保质期,<br/>实现智能地出库入库，<br/>祝你使用愉快！</span>
+            </div>
+        </div>
+        <div class="position"><img src="/img/beijing.jpg"/></div>
+    </div>
+    <!--登录表单-->
+    <div class="contentRight">
+        <div class="title">账号登录</div>
+        <div class="contain">
+            <!--教师登录界面-->
+            <div id="teacher">
+                <form class="form">
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control formHeight" value="admin" id="userId"
+                                   name="userId" placeholder="请输入账号">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control formHeight" value="admin" id="userPassword"
+                                   name="userPassword" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> 下次自动登录
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button type="button" class="btn btn-primary  btn-block " id="btn_Login">登录</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row formFloot">
+                        <!--<p style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>-->
+                        <p class="remind">账号或是密码错误！</p>
+                        <p><a>忘记密码？</a>|<a>注册账号</a>|<a>意见反馈</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.login-box -->
+<script src="/libs/jquery.min.js"></script>
+<!--<script src="statics/libs/vue.min.js"></script>-->
+<!--<script src="statics/libs/iview.min.js"></script>-->
+<script src="/libs/bootstrap.min.js"></script>
+<!--<script src="statics/plugins/slimscroll/jquery.slimscroll.min.js"></script>-->
+<!--<script src="statics/libs/fastclick.min.js"></script>-->
+<script type="text/javascript">
+    $("#btn_Login").click(function () {
+        var data = "username=" +$("#userId").val() + "&password=" +$("#userPassword").val() + "&captcha=" +1234;
+        $.ajax({
+            url: "../sys/login",
+            type: "POST",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.code == 0) {//登录成功
+                    parent.location.href = '/index.html';
+                } else {
+                    alert("密码或账户错误");
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

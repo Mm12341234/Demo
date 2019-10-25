@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>iview example</title>
+    <link rel="stylesheet" href="/css/iview.css" />
+    <script type="text/javascript" src="/libs/vue.min.js" ></script>
+    <script type="text/javascript" src="/libs/iview.min.js" ></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- 这里设定了项目根路径,后面使用到路径的地方正常填写即可 -->
+    <base th:href="${#request.getContextPath()}+'/'">
+    <script src="/libs/jquery.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <i-button type="info" @click="queryTable">查询列表</i-button>
+    <i-button type="info" @click="generator">生成代码</i-button>
+    <i-table border :columns="columns" :data="data" @on-select="select" @on-select-all="selectAll"></i-table>
+
+</div>
+<!--<script th:src="@{${#httpServletRequest.getContextPath()}+'Bootstrap/viewjs/SysPermissionList.js?_'+${new java.util.Date().getTime()}}"></script>-->
+<!--<script th:src="@{${#request.getContextPath()}+'Bootstrap/viewjs/SysPermissionList.js?_'+${new java.util.Date().getTime()}}"></script>-->
+<script th:src="@{'Bootstrap/viewjs/SysPermissionList.js?_'+${new java.util.Date().getTime()}}"></script>
+<script>
+    // 时间格式化
+    function formatDate (date, fmt) {
+        let o = {
+            'M+': date.getMonth() + 1, // 月份
+            'd+': date.getDate(), // 日
+            'h+': date.getHours(), // 小时
+            'm+': date.getMinutes(), // 分
+            's+': date.getSeconds(), // 秒
+            'S': date.getMilliseconds() // 毫秒
+        }
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+        }
+        for (var k in o) {
+            if (new RegExp('(' + k + ')').test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+            }
+        }
+        return fmt
+    }
+
+    // alert("location:"+window.location);
+    // alert("href: "+window.location.href);
+    // alert("protocol: "+window.location.protocol);
+    // alert("host&port: "+window.location.host);
+    // alert("port: "+window.location.port);
+    // alert("hostname: "+window.location.hostname);
+
+    var vm=new Vue({
+        el: '#app',
+        data: {
+            visible: false,
+            theme1: 'light',
+            value1: 25,
+            value2: [20, 50],
+            value3: [20, 50],
+            selection:[],
+            columns: [
+                {
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },
+                {
+                    title: '表名',
+                    key: 'tableName',
+                    align:'center'
+                },
+                {
+                    title: '创建时间',
+                    key: 'createTime',
+                    align:'center',
+                    render:function(h,params){
+                        return h('div',
+                            formatDate(new Date(params.row.createTime),'yyyy-MM-dd hh:mm:ss')
+                        )
+                    }
+                },
+                {
+                    title: '引擎',
+                    key: 'ENGINE',
+                    align:'center'
+                },
+                {
+                    title: '备注',
+                    key: 'tableComment',
+                    align:'center'
+                }],
+            data: [
+            ]
+        },
+        methods: {
+            show: function () {
+                this.visible = true;
+            },
+            generator: function () {
+                var tableNames=new Array();
+                for(var i=0;i<vm.selection.length;i++){
+                    tableNames.push(vm.selection[i].tableName);
+                }
+                if (tableNames.length== 0) {
+                    return;
+                }
+                location.href = "../sys/generator/code?tables="+ JSON.stringify(tableNames);
+            },
+            queryTable: function () {
+                $.ajax({
+                    type: "POST",
+                    url: "../sys/generator/list",
+                    // data: pageData,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        for (var i = 0; i < data.length; i++) {
+                            vm.data.push(data[i]);
+                        }
+                    }
+                });
+            },
+            select:function(selection,row){
+                vm.selection=selection;
+                console.log(selection);
+                console.log(row);
+            },
+            selectAll:function(selection){
+                vm.selection=selection;
+                console.log(vm.selection);
+            }
+        }
+    });
+</script>
+</body>
+</html>
