@@ -11,4 +11,8 @@ public class LoginController {
     public String index(){
         return null;
     }
+
+    public void testlog(){
+        //记录客户端请求参数
+    }
 }

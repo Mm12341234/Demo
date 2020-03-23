@@ -4,21 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>统一登录页面</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <!--<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">-->
-    <!--<link rel="stylesheet" href="statics/css/bootstrap.min.css">-->
-
-    <!--<link rel="stylesheet" href="statics/css/font-awesome.min.css">-->
-    <!--<link rel="stylesheet" href="statics/css/style.css">-->
-    <!--<link rel="stylesheet" href="statics/css/login.css">-->
-    <!--<link rel="stylesheet" href="statics/css/main.css">-->
-    <!--<link rel="stylesheet" href="statics/css/iview.css">-->
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <!--<script src="statics/libs/html5shiv.min.js"></script>-->
-    <script src="/libs/respond.min.js"></script>
-    <![endif]-->
+    <!--<base th:href="${#request.getContextPath()}+'/'">-->
+    <base th:href="@{/}">
+    <script src="libs/respond.min.js"></script>
     <style type="text/css">
         .title {
             height: 20px;
@@ -112,8 +100,7 @@
             display:none;
         }
     </style>
-    <!--<script src="statics/libs/jquery.min.js"></script>-->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body>
 <nav class="navbar navbar-dark bg-primary fontColorSet">
@@ -126,8 +113,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <!--<a class="navbar-brand" href="#">智能仓库管理系统</a>-->
+            <!--<a class="navbar-brand" href="#">智能仓45库管理系统</a>-->
             <img src="/img/logo.png" class="logo"/>
+            <!--<img th:src="@{/img/logo.png}" />-->
         </div>
     </div>
 </nav>
@@ -142,7 +130,7 @@
                     <br/>时刻清楚食物的保质期,<br/>实现智能地出库入库，<br/>祝你使用愉快！</span>
             </div>
         </div>
-        <div class="position"><img src="/img/beijing.jpg"/></div>
+        <div class="position"><img src="img/beijing.jpg"/></div>
     </div>
     <!--登录表单-->
     <div class="contentRight">
@@ -188,13 +176,8 @@
         </div>
     </div>
 </div>
-<!-- /.login-box -->
-<script src="/libs/jquery.min.js"></script>
-<!--<script src="statics/libs/vue.min.js"></script>-->
-<!--<script src="statics/libs/iview.min.js"></script>-->
-<script src="/libs/bootstrap.min.js"></script>
-<!--<script src="statics/plugins/slimscroll/jquery.slimscroll.min.js"></script>-->
-<!--<script src="statics/libs/fastclick.min.js"></script>-->
+<script src="libs/jquery.min.js" ></script>
+<!--<script th:src="@{'js/sys/login.js?_'+${new java.util.Date().getTime()}}"></script>-->
 <script type="text/javascript">
     $("#btn_Login").click(function () {
         var data = "username=" +$("#userId").val() + "&password=" +$("#userPassword").val() + "&captcha=" +1234;

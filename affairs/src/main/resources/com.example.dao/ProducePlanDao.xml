@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.ProducePlanDao">
+
+    <resultMap type="com.example.entity.ProducePlanEntity" id="producePlanMap">
+        <result property="id" column="id"/>
+        <result property="year" column="year"/>
+        <result property="week" column="week"/>
+        <result property="lineId" column="line_id"/>
+        <result property="farmId" column="farm_id"/>
+        <result property="parts" column="parts"/>
+        <result property="color" column="color"/>
+        <result property="factoryid" column="factoryid"/>
+        <result property="dropPoint" column="drop_point"/>
+        <result property="startTime" column="start_time"/>
+        <result property="demandNum" column="demand_num"/>
+        <result property="style" column="style"/>
+        <result property="minpacking" column="minpacking"/>
+        <result property="summonNum" column="summon_num"/>
+        <result property="deviation" column="deviation"/>
+        <result property="ismany" column="ismany"/>
+        <result property="coefficient" column="coefficient"/>
+        <result property="dealType" column="deal_type"/>
+        <result property="carType" column="car_type"/>
+        <result property="carStyle" column="car_style"/>
+        <result property="carColor" column="car_color"/>
+        <result property="nextCarType" column="next_car_type"/>
+        <result property="nextCarColor" column="next_car_color"/>
+        <result property="nextCarStyle" column="next_car_style"/>
+        <result property="nextCarTypeOptimal" column="next_car_type_optimal"/>
+    </resultMap>
+
+
+    <select id="queryObject" resultType="com.example.entity.ProducePlanEntity">
+        select
+           `id`,
+           `year`,
+           `week`,
+           `line_id`,
+           `farm_id`,
+           `parts`,
+           `color`,
+           `factoryid`,
+           `drop_point`,
+           `start_time`,
+           `demand_num`,
+           `style`,
+           `minpacking`,
+           `summon_num`,
+           `deviation`,
+           `ismany`,
+           `coefficient`,
+           `deal_type`,
+           `car_type`,
+           `car_style`,
+           `car_color`,
+           `next_car_type`,
+           `next_car_color`,
+           `next_car_style`,
+           `next_car_type_optimal`
+        from produce_plan
+        where id = #{id}
+    </select>
+
+
+    <select id="queryList" resultType="com.example.entity.ProducePlanEntity">
+        select
+           `id`,
+           `year`,
+           `week`,
+           `line_id`,
+           `farm_id`,
+           `parts`,
+           `color`,
+           `factoryid`,
+           `drop_point`,
+           `start_time`,
+           `demand_num`,
+           `style`,
+           `minpacking`,
+           `summon_num`,
+           `deviation`,
+           `ismany`,
+           `coefficient`,
+           `deal_type`,
+           `car_type`,
+           `car_style`,
+           `car_color`,
+           `next_car_type`,
+           `next_car_color`,
+           `next_car_style`,
+           `next_car_type_optimal`
+        from produce_plan
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryListByMap" resultType="com.example.entity.ProducePlanEntity">
+        select
+        `id`,
+        `year`,
+        `week`,
+        `line_id`,
+        `farm_id`,
+        `parts`,
+        `color`,
+        `factoryid`,
+        `drop_point`,
+        `start_time`,
+        `demand_num`,
+        `style`,
+        `minpacking`,
+        `summon_num`,
+        `deviation`,
+        `ismany`,
+        `coefficient`,
+        `deal_type`,
+        `car_type`,
+        `car_style`,
+        `car_color`,
+        `next_car_type`,
+        `next_car_color`,
+        `next_car_style`,
+        `next_car_type_optimal`
+        from produce_plan
+        where ismany>1 and parts=#{parts}
+    </select>
+
+    <select id="queryPartList" resultType="String">
+        select
+            distinct(`parts`)
+        from produce_plan
+        where ismany>1
+    </select>
+
+    <select id="queryDemandNum" resultType="int">
+        select
+            sum(demand_num)
+        from produce_plan
+        where ismany>1 and parts=#{parts}
+    </select>
+
+    <select id="getDataByWeek" resultType="com.example.entity.ProducePlanEntity">
+        SELECT
+            *
+        FROM `produce_plan`
+        where ismany>1 and year=#{year} and week=#{week}
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from produce_plan
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.example.entity.ProducePlanEntity" useGeneratedKeys="true" keyProperty="id">
+         insert into produce_plan(
+             
+             `year`,
+             `week`,
+             `line_id`,
+             `farm_id`,
+             `parts`,
+             `color`,
+             `factoryid`,
+             `drop_point`,
+             `start_time`,
+             `demand_num`,
+             `style`,
+             `minpacking`,
+             `summon_num`,
+             `deviation`,
+             `ismany`,
+             `coefficient`,
+             `deal_type`,
+             `car_type`,
+             `car_style`,
+             `car_color`,
+             `next_car_type`,
+             `next_car_color`,
+             `next_car_style`,
+             `next_car_type_optimal`
+         ) values(
+             
+             #{year},
+             #{week},
+             #{lineId},
+             #{farmId},
+             #{parts},
+             #{color},
+             #{factoryid},
+             #{dropPoint},
+             #{startTime},
+             #{demandNum},
+             #{style},
+             #{minpacking},
+             #{summonNum},
+             #{deviation},
+             #{ismany},
+             #{coefficient},
+             #{dealType},
+             #{carType},
+             #{carStyle},
+             #{carColor},
+             #{nextCarType},
+             #{nextCarColor},
+             #{nextCarStyle},
+             #{nextCarTypeOptimal}
+         )
+    </insert>
+
+    <update id="update" parameterType="com.example.entity.ProducePlanEntity">
+        update produce_plan
+        <set>
+            
+            <if test="year!= null">`year` =#{year},</if>
+            <if test="week!= null">`week` =#{week},</if>
+            <if test="lineId!= null">`line_id` =#{lineId},</if>
+            <if test="farmId!= null">`farm_id` =#{farmId},</if>
+            <if test="parts!= null">`parts` =#{parts},</if>
+            <if test="color!= null">`color` =#{color},</if>
+            <if test="factoryid!= null">`factoryid` =#{factoryid},</if>
+            <if test="dropPoint!= null">`drop_point` =#{dropPoint},</if>
+            <if test="startTime!= null">`start_time` =#{startTime},</if>
+            <if test="demandNum!= null">`demand_num` =#{demandNum},</if>
+            <if test="style!= null">`style` =#{style},</if>
+            <if test="minpacking!= null">`minpacking` =#{minpacking},</if>
+            <if test="summonNum!= null">`summon_num` =#{summonNum},</if>
+            <if test="deviation!= null">`deviation` =#{deviation},</if>
+            <if test="ismany!= null">`ismany` =#{ismany},</if>
+            <if test="coefficient!= null">`coefficient` =#{coefficient},</if>
+            <if test="dealType!= null">`deal_type` =#{dealType},</if>
+            <if test="carType!= null">`car_type` =#{carType},</if>
+            <if test="carStyle!= null">`car_style` =#{carStyle},</if>
+            <if test="carColor!= null">`car_color` =#{carColor},</if>
+            <if test="nextCarType!= null">`next_car_type` =#{nextCarType},</if>
+            <if test="nextCarColor!= null">`next_car_color` =#{nextCarColor},</if>
+            <if test="nextCarStyle!= null">`next_car_style` =#{nextCarStyle},</if>
+            <if test="nextCarTypeOptimal!= null">`next_car_type_optimal` =#{nextCarTypeOptimal}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from produce_plan where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from produce_plan where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+        #{id}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

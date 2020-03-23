@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>${comments}</title>
-    <#assign header='#parse("sys/header.html")'>
+    <div th:replace="sys/header.html"></div>
+    <base th:href="${r'#request.getContextPath()'}+'/'">
     <#assign save='#if($shiro.hasPermission("${pathName}:save"))'>
     <#assign update='#if($shiro.hasPermission("${pathName}:update"))'>
     <#assign delete='#if($shiro.hasPermission("${pathName}:delete"))'>
     <#assign end='#end'>
-    ${header}
+    <#--${header}-->
 </head>
 <body>
 <div id="rrapp" v-cloak>

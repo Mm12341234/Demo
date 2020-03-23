@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.ArrivalDao">
+
+    <resultMap type="com.example.entity.ArrivalEntity" id="arrivalMap">
+        <result property="id" column="id"/>
+        <result property="ncome" column="ncome"/>
+        <result property="receiptplace" column="receiptplace"/>
+        <result property="parts" column="parts"/>
+        <result property="color" column="color"/>
+        <result property="plancode" column="plancode"/>
+        <result property="receivingDate" column="receiving_date"/>
+        <result property="receivingTime" column="receiving_time"/>
+        <result property="orderQuantity" column="order_quantity"/>
+        <result property="quantityAdjusted" column="quantity_adjusted"/>
+        <result property="completionDate" column="completion_date"/>
+        <result property="summonsnumber" column="summonsnumber"/>
+        <result property="summonsPublication" column="summons_publication"/>
+        <result property="arrivalRules" column="arrival_rules"/>
+        <result property="orderPackingNumber" column="order_packing_number"/>
+        <result property="dropPoint" column="drop_point"/>
+        <result property="tailProcessingDistinguishing" column="tail_processing_distinguishing"/>
+        <result property="classification" column="classification"/>
+        <result property="productionPlanNumber" column="production_plan_number"/>
+        <result property="typeDerive" column="type_derive"/>
+        <result property="optionalCode" column="optional_code"/>
+        <result property="bodyColor" column="body_color"/>
+        <result property="vehiclecode" column="vehiclecode"/>
+        <result property="receivingType" column="receiving_type"/>
+        <result property="plannedProductQuantity" column="planned_product_quantity"/>
+        <result property="plannedDate" column="planned_date"/>
+        <result property="plannedTime" column="planned_time"/>
+        <result property="particularYear" column="particular_year"/>
+        <result property="weeklyTimes" column="weekly_times"/>
+        <result property="nfrom" column="nfrom"/>
+        <result property="nto" column="nto"/>
+        <result property="bearNumber" column="bear_number"/>
+        <result property="line" column="line"/>
+        <result property="receivingDateTime" column="receiving_date_time"/>
+        <result property="lineId" column="line_id"/>
+        <result property="farmId" column="farm_id"/>
+        <result property="receivingDay" column="receiving_day"/>
+    </resultMap>
+
+
+    <select id="queryObject" resultType="com.example.entity.ArrivalEntity">
+        select
+           `id`,
+           `ncome`,
+           `receiptplace`,
+           `parts`,
+           `color`,
+           `plancode`,
+           `receiving_date`,
+           `receiving_time`,
+           `order_quantity`,
+           `quantity_adjusted`,
+           `completion_date`,
+           `summonsnumber`,
+           `summons_publication`,
+           `arrival_rules`,
+           `order_packing_number`,
+           `drop_point`,
+           `tail_processing_distinguishing`,
+           `classification`,
+           `production_plan_number`,
+           `type_derive`,
+           `optional_code`,
+           `body_color`,
+           `vehiclecode`,
+           `receiving_type`,
+           `planned_product_quantity`,
+           `planned_date`,
+           `planned_time`,
+           `particular_year`,
+           `weekly_times`,
+           `nfrom`,
+           `nto`,
+           `bear_number`,
+           `line`,
+           `receiving_date_time`,
+           `line_id`,
+           `farm_id`,
+           `receiving_day`
+        from arrival
+        where id = #{id}
+    </select>
+
+
+    <select id="queryList" resultType="com.example.entity.ArrivalEntity">
+        select
+           `id`,
+           `ncome`,
+           `receiptplace`,
+           `parts`,
+           `color`,
+           `plancode`,
+           `receiving_date`,
+           `receiving_time`,
+           `order_quantity`,
+           `quantity_adjusted`,
+           `completion_date`,
+           `summonsnumber`,
+           `summons_publication`,
+           `arrival_rules`,
+           `order_packing_number`,
+           `drop_point`,
+           `tail_processing_distinguishing`,
+           `classification`,
+           `production_plan_number`,
+           `type_derive`,
+           `optional_code`,
+           `body_color`,
+           `vehiclecode`,
+           `receiving_type`,
+           `planned_product_quantity`,
+           `planned_date`,
+           `planned_time`,
+           `particular_year`,
+           `weekly_times`,
+           `nfrom`,
+           `nto`,
+           `bear_number`,
+           `line`,
+           `receiving_date_time`,
+           `line_id`,
+           `farm_id`,
+           `receiving_day`
+        from arrival
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="com.example.entity.ArrivalEntity">
+        select * from arrival where weekly_times in (4) and parts=#{parts}
+    </select>
+
+    <select id="queryArrivalNum" resultType="Integer">
+        select sum(quantity_adjusted+order_quantity) from arrival where weekly_times in (4) and parts=#{parts}
+    </select>
+
+    <select id="getDataByWeek" resultType="com.example.entity.ArrivalEntity">
+        select * from arrival  where particular_year=#{year} and weekly_times=#{week}
+    </select>
+
+    <select id="queryTotal" resultType="Integer">
+        select count(*) from arrival
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.example.entity.ArrivalEntity" useGeneratedKeys="true" keyProperty="id">
+         insert into arrival(
+             `ncome`,
+             `receiptplace`,
+             `parts`,
+             `color`,
+             `plancode`,
+             `receiving_date`,
+             `receiving_time`,
+             `order_quantity`,
+             `quantity_adjusted`,
+             `completion_date`,
+             `summonsnumber`,
+             `summons_publication`,
+             `arrival_rules`,
+             `order_packing_number`,
+             `drop_point`,
+             `tail_processing_distinguishing`,
+             `classification`,
+             `production_plan_number`,
+             `type_derive`,
+             `optional_code`,
+             `body_color`,
+             `vehiclecode`,
+             `receiving_type`,
+             `planned_product_quantity`,
+             `planned_date`,
+             `planned_time`,
+             `particular_year`,
+             `weekly_times`,
+             `nfrom`,
+             `nto`,
+             `bear_number`,
+             `line`,
+             `receiving_date_time`,
+             `line_id`,
+             `farm_id`,
+             `receiving_day`
+         ) values(
+             
+             #{ncome},
+             #{receiptplace},
+             #{parts},
+             #{color},
+             #{plancode},
+             #{receivingDate},
+             #{receivingTime},
+             #{orderQuantity},
+             #{quantityAdjusted},
+             #{completionDate},
+             #{summonsnumber},
+             #{summonsPublication},
+             #{arrivalRules},
+             #{orderPackingNumber},
+             #{dropPoint},
+             #{tailProcessingDistinguishing},
+             #{classification},
+             #{productionPlanNumber},
+             #{typeDerive},
+             #{optionalCode},
+             #{bodyColor},
+             #{vehiclecode},
+             #{receivingType},
+             #{plannedProductQuantity},
+             #{plannedDate},
+             #{plannedTime},
+             #{particularYear},
+             #{weeklyTimes},
+             #{nfrom},
+             #{nto},
+             #{bearNumber},
+             #{line},
+             #{receivingDateTime},
+             #{lineId},
+             #{farmId},
+             #{receivingDay}
+         )
+    </insert>
+
+    <update id="update" parameterType="com.example.entity.ArrivalEntity">
+        update arrival
+        <set>
+            
+            <if test="ncome!= null">`ncome` =#{ncome},</if>
+            <if test="receiptplace!= null">`receiptplace` =#{receiptplace},</if>
+            <if test="parts!= null">`parts` =#{parts},</if>
+            <if test="color!= null">`color` =#{color},</if>
+            <if test="plancode!= null">`plancode` =#{plancode},</if>
+            <if test="receivingDate!= null">`receiving_date` =#{receivingDate},</if>
+            <if test="receivingTime!= null">`receiving_time` =#{receivingTime},</if>
+            <if test="orderQuantity!= null">`order_quantity` =#{orderQuantity},</if>
+            <if test="quantityAdjusted!= null">`quantity_adjusted` =#{quantityAdjusted},</if>
+            <if test="completionDate!= null">`completion_date` =#{completionDate},</if>
+            <if test="summonsnumber!= null">`summonsnumber` =#{summonsnumber},</if>
+            <if test="summonsPublication!= null">`summons_publication` =#{summonsPublication},</if>
+            <if test="arrivalRules!= null">`arrival_rules` =#{arrivalRules},</if>
+            <if test="orderPackingNumber!= null">`order_packing_number` =#{orderPackingNumber},</if>
+            <if test="dropPoint!= null">`drop_point` =#{dropPoint},</if>
+            <if test="tailProcessingDistinguishing!= null">`tail_processing_distinguishing` =#{tailProcessingDistinguishing},</if>
+            <if test="classification!= null">`classification` =#{classification},</if>
+            <if test="productionPlanNumber!= null">`production_plan_number` =#{productionPlanNumber},</if>
+            <if test="typeDerive!= null">`type_derive` =#{typeDerive},</if>
+            <if test="optionalCode!= null">`optional_code` =#{optionalCode},</if>
+            <if test="bodyColor!= null">`body_color` =#{bodyColor},</if>
+            <if test="vehiclecode!= null">`vehiclecode` =#{vehiclecode},</if>
+            <if test="receivingType!= null">`receiving_type` =#{receivingType},</if>
+            <if test="plannedProductQuantity!= null">`planned_product_quantity` =#{plannedProductQuantity},</if>
+            <if test="plannedDate!= null">`planned_date` =#{plannedDate},</if>
+            <if test="plannedTime!= null">`planned_time` =#{plannedTime},</if>
+            <if test="particularYear!= null">`particular_year` =#{particularYear},</if>
+            <if test="weeklyTimes!= null">`weekly_times` =#{weeklyTimes},</if>
+            <if test="nfrom!= null">`nfrom` =#{nfrom},</if>
+            <if test="nto!= null">`nto` =#{nto},</if>
+            <if test="bearNumber!= null">`bear_number` =#{bearNumber},</if>
+            <if test="line!= null">`line` =#{line},</if>
+            <if test="receivingDateTime!= null">`receiving_date_time` =#{receivingDateTime},</if>
+            <if test="lineId!= null">`line_id` =#{lineId},</if>
+            <if test="farmId!= null">`farm_id` =#{farmId},</if>
+            <if test="receivingDay!= null">`receiving_day` =#{receivingDay}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from arrival where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from arrival where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+        #{id}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

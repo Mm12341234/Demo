@@ -137,15 +137,4 @@ public class J2CacheUtils {
         return CACHE_MAP.containsKey(toKey(SYS_CACHE_NAME, key));
     }
 
-    /**
-     * 判断某个key存在于哪级的缓存中
-     *
-     * @param region cache region
-     * @param key    cache key
-     * @return 0(不存在), 1(一级), 2(二级)
-     */
-//    public static int check(String region, String key) {
-////        return cache.check(region, key);
-//        return 1;
-//    }
 }

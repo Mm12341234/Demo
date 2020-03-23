@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.ChainspeedDao">
+
+    <resultMap type="com.example.entity.ChainspeedEntity" id="chainspeedMap">
+        <result property="platform" column="platform"/>
+        <result property="productionDate" column="production_date"/>
+        <result property="edit" column="edit"/>
+        <result property="isuse" column="isuse"/>
+        <result property="id" column="id"/>
+        <result property="line" column="line"/>
+        <result property="lineId" column="line_id"/>
+        <result property="farmId" column="farm_id"/>
+    </resultMap>
+
+
+    <select id="queryObject" resultType="com.example.entity.ChainspeedEntity">
+        select
+           `platform`,
+           `production_date`,
+           `edit`,
+           `isuse`,
+           `id`,
+           `line`,
+           `line_id`,
+           `farm_id`
+        from chainspeed
+        where id = #{id}
+    </select>
+
+
+    <select id="queryList" resultType="com.example.entity.ChainspeedEntity">
+        select
+           `platform`,
+           `production_date`,
+           `edit`,
+           `isuse`,
+           `id`,
+           `line`,
+           `line_id`,
+           `farm_id`
+        from chainspeed
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="com.example.entity.ChainspeedEntity">
+        select
+        `platform`,
+        `production_date`,
+        `edit`,
+        `isuse`,
+        `id`,
+        `line`,
+        `line_id`,
+        `farm_id`
+        from chainspeed
+        WHERE isuse=0
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from chainspeed
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.example.entity.ChainspeedEntity" useGeneratedKeys="true" keyProperty="id">
+         insert into chainspeed(
+             `platform`,
+             `production_date`,
+             `edit`,
+             `isuse`,
+             
+             `line`,
+             `line_id`,
+             `farm_id`
+         ) values(
+             #{platform},
+             #{productionDate},
+             #{edit},
+             #{isuse},
+             
+             #{line},
+             #{lineId},
+             #{farmId}
+         )
+    </insert>
+
+    <update id="update" parameterType="com.example.entity.ChainspeedEntity">
+        update chainspeed
+        <set>
+            <if test="platform!= null">`platform` =#{platform},</if>
+            <if test="productionDate!= null">`production_date` =#{productionDate},</if>
+            <if test="edit!= null">`edit` =#{edit},</if>
+            <if test="isuse!= null">`isuse` =#{isuse},</if>
+            
+            <if test="line!= null">`line` =#{line},</if>
+            <if test="lineId!= null">`line_id` =#{lineId},</if>
+            <if test="farmId!= null">`farm_id` =#{farmId}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from chainspeed where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from chainspeed where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+        #{id}
+        </foreach>
+    </delete>
+
+
+
+</mapper>
